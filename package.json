@@ -1,0 +1,45 @@
+{
+  "name": "tic-tac-toe",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "./node_modules/.bin/mocha --recursive -R spec test/"
+  },
+  "dependencies": {
+    "express": "~3.1.0",
+    "nodemon": "~0.7.2",
+    "ejs": "~0.8.3",
+    "less-middleware": "~0.1.9",
+    "socket.io": "~0.9.14",
+    "underscore": "~1.4.4",
+    "MD5": "^1.2.1",
+    "async": "0.9.0",
+    "aws-sdk": "^2.1.17",
+    "body-parser": "v1.12.0",
+    "config": "^1.12.0",
+    "connect-multiparty": "^1.2.5",
+    "jade": "^1.9.2",
+    "math": "0.0.3",
+    "mysql": "^2.5.5",
+    "node-fs": "^0.1.7",
+    "nodemailer": "*",
+    "nodemailer-smtp-transport": "*",
+    "pm2": "^0.12.8",
+    "request": "*",
+    "twilio": "^2.0.0",
+    "log4js":"^0.6.26",
+    "moment":"^2.10.3",
+    "xmlhttprequest": "^1.7.0",
+    "datatable":"^0.0.6"
+  },
+  "devDependencies": {
+    "mocha": "~1.8.2",
+    "chai": "~1.5.0",
+    "rewire": "~1.1.2"
+  },
+  "engines": {
+    "node": "~0.10.4",
+    "npm": "~1.2.18"
+  }
+}
