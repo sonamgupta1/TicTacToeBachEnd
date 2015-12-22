@@ -7,8 +7,7 @@ var async = require('async'),
     logging = require('../resources/logging'),
     md5 = require('MD5');
 
-  var  _ = require('underscore');
-
+var _ = require('underscore');
 
 
 exports.signup = function (req, res) {
@@ -32,7 +31,7 @@ exports.signup = function (req, res) {
             function (cb) {
                 auth_layer.checkBlank(res, all_value, cb);
             },
-            function(data,cb) {
+            function (data, cb) {
                 auth_layer.checkPassword(res, password, cb);
             },
             function (data, cb) {
@@ -48,14 +47,19 @@ exports.signup = function (req, res) {
 
             },
             function (registerData, cb) {
-                cb(null, registerData);
+
+                var signUpData = [{
+                    access_token: user.access_token
+                }];
+
+                cb(null, signUpData);
             }
         ],
         function (error, result) {
             if (error) {
                 responses.finalResultError(res, []);
             } else {
-                responses.successRegister(res, []);
+                responses.successRegister(res, result);
             }
         });
 };
@@ -300,6 +304,7 @@ exports.dashboardInfo = function (req, res) {
         rank,
         completedAttempt,
         winPercentageAll,
+        totalTie,
         totalUser;
 
 
@@ -313,6 +318,12 @@ exports.dashboardInfo = function (req, res) {
             },
             function (profileData, cb) {
                 id = profileData[0].id;
+
+                db_layer.getTieCount(res, id, cb);
+            },
+            function (userTie, cb) {
+
+                totalTie = userTie[0].user_tie;
                 //db_layer.getDashboardUsers(res, cb);
                 db_layer.getTotalUsers(res, cb);
 
@@ -352,7 +363,7 @@ exports.dashboardInfo = function (req, res) {
                 var j = 0;
                 for (var i = 0; i < user_id.length; i++) {
 
-                    (function(i) {
+                    (function (i) {
                         var id = user_id[i];
                         common_function.calculateUserWinPercentage(res, id, function (error, result) {
 
@@ -361,7 +372,7 @@ exports.dashboardInfo = function (req, res) {
                                 winPercentageAll: result
                             });
 
-                            if(++conuter === user_id.length) {
+                            if (++conuter === user_id.length) {
 
                                 cb(null, userWinResult);
                             }
@@ -370,35 +381,35 @@ exports.dashboardInfo = function (req, res) {
                 }
 
             },
-          function (winPercentage, cb) {
+            function (winPercentage, cb) {
 
-                var sortedWinPercentage =  (_.sortBy(winPercentage, 'winPercentageAll')).reverse();
+                var sortedWinPercentage = (_.sortBy(winPercentage, 'winPercentageAll')).reverse();
 
                 console.log("winPercentage", sortedWinPercentage);
 
                 cb(null, sortedWinPercentage);
             },
-        function(sortedWinPercentage, cb){
+            function (sortedWinPercentage, cb) {
 
-            var index = _.findIndex(sortedWinPercentage, { id: id });
-            var finalIndex = 0;
-            var counter = 0;
+                var index = _.findIndex(sortedWinPercentage, {id: id});
+                var finalIndex = 0;
+                var counter = 0;
 
 
-            for(var i = 0; i<index; i++) {
+                for (var i = 0; i < index; i++) {
 
-                if (sortedWinPercentage[i].winPercentageAll === sortedWinPercentage[i + 1].winPercentageAll) {
+                    if (sortedWinPercentage[i].winPercentageAll === sortedWinPercentage[i + 1].winPercentageAll) {
 
-                    return cb(null,i);
+                        return cb(null, i);
+                    }
                 }
-            }
 
-            cb(null,index);
-        },
-        function(FinalIndex, cb){
-            rank = FinalIndex+1;
-            cb(null,100);
-        }
+                cb(null, index);
+            },
+            function (FinalIndex, cb) {
+                rank = FinalIndex + 1;
+                cb(null, 100);
+            }
 
         ],
         function (error, result) {
@@ -409,6 +420,7 @@ exports.dashboardInfo = function (req, res) {
                 totalUser: totalUser,
                 win: win,
                 loss: loss,
+                totalTie: totalTie,
                 score: win * 10,
                 completedAttempt: completedAttempt,
                 rank: rank

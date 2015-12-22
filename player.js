@@ -22,6 +22,7 @@ function Player(number) {
  */
 Player.prototype.getID = function() {
 	return this.id;
+	console.log("idddddddddd",this.id);
 };
 
 /**

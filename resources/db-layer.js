@@ -151,9 +151,23 @@ exports.getWinCount = function (res, id, cb) {
 exports.getLossCount = function (res, id, cb) {
 
 
-    var sqlSelectUserWins = "SELECT COUNT(*) as `user_loss` FROM `game_assignment` where (`first_user_id` = ? OR `second_user_id` =?) AND `result` =? AND `status` = ?";
-    var winParameter = [id, id, 0, 1];
-    connection.query(sqlSelectUserWins, winParameter, function (error, result) {
+    var sqlSelectUserLoss = "SELECT COUNT(*) as `user_loss` FROM `game_assignment` where (`first_user_id` = ? OR `second_user_id` =?) AND `result` =? AND `status` = ?";
+    var lossParameter = [id, id, 0, 1];
+    connection.query(sqlSelectUserLoss, lossParameter, function (error, result) {
+
+        if (error) {
+            responses.executionError(res, []);
+        } else {
+            cb(null, result);
+        }
+    });
+};
+exports.getTieCount = function (res, id, cb) {
+
+
+    var sqlSelectUserTies = "SELECT COUNT(*) as `user_tie` FROM `game_assignment` where (`first_user_id` = ? OR `second_user_id` =?) AND `result` =? AND `status` = ?";
+    var tieParameter = [id, id, 2, 1];
+    connection.query(sqlSelectUserTies, tieParameter, function (error, result) {
 
         if (error) {
             responses.executionError(res, []);
