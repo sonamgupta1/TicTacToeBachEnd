@@ -5,8 +5,10 @@ var async = require('async'),
     db_layer = require('../resources/db-layer'),
     responses = require('../resources/responses'),
     logging = require('../resources/logging'),
-    md5 = require('MD5'),
-    _ = require('underscore');
+    md5 = require('MD5');
+
+  var  _ = require('underscore');
+
 
 
 exports.signup = function (req, res) {
@@ -29,6 +31,9 @@ exports.signup = function (req, res) {
     async.waterfall([
             function (cb) {
                 auth_layer.checkBlank(res, all_value, cb);
+            },
+            function(data,cb) {
+                auth_layer.checkPassword(res, password, cb);
             },
             function (data, cb) {
                 db_layer.getUserName(res, user_name, cb);
@@ -367,20 +372,72 @@ exports.dashboardInfo = function (req, res) {
           function (winPercentage, cb) {
 
                 var sortedWinPercentage =  (_.sortBy(winPercentage, 'winPercentageAll')).reverse();
-
-                console.log("winPercentage", sortedWinPercentage);
-
-                var index = _.findIndex(sortedWinPercentage, { id: 19 });
-
-                console.log("rank",index+1);
+                //
+                //console.log("winPercentage", sortedWinPercentage);
+                //
+                //var index = _.findIndex(sortedWinPercentage, { id: 19 });
+                //
+                //console.log("rank",index+1);
 
                 cb(null, sortedWinPercentage);
+            },
+        function(sortedWinPercentage, cb){
+
+            var index = _.findIndex(sortedWinPercentage, { id: id });
+            var finalIndex = 0;
+            var counter = 0;
+
+
+            for(var i = 0; i<index; i++) {
+
+                if (sortedWinPercentage[i].winPercentageAll === sortedWinPercentage[i + 1].winPercentageAll) {
+
+                    console.log("iiiiiiiiiiiiii", i);
+                    return cb(i);
+                }
+            
+                else{
+                    console.log("iiiiiiiiiiiiii======================",index);
+                    finalIndex = index;
+                    return cb(finalIndex);
+
+
+                }
+
+                //if(++counter === index) {
+                //    cb(null, finalIndex);
+                //}
             }
+
+        },
+        function(FinalIndex, cb){
+            console.log("FinalIndex @@@@@@@@@",FinalIndex);
+            cb(null,100);
+        }
 
         ],
         function (error, result) {
 
+            //var length = result.length;
+            //
+            //console.log("length", result[0].winPercentageAll);
+
             var index = _.findIndex(result, { id: id });
+
+            //console.log("index",index);
+            //
+            //
+            //for(var i = 0; i<index; i++){
+            //
+            //    if(result[i].winPercentageAll === result[i+1].winPercentageAll){
+            //
+            //        console.log("iiiiiiiiiiiiii",i);
+            //    }
+            //    else{
+            //        console.log("iiiiiiiiiiiiii======================",index);
+            //    }
+            //}
+
 
             var dashboard = [{
                 id: id,

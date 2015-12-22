@@ -1,6 +1,6 @@
 var constants = require('./constant'),
     responses = require('./responses');
-    db_layer  = require('./db-layer');
+db_layer = require('./db-layer');
 
 function checkBlank(arr) {
     var arrlength = arr.length;
@@ -28,13 +28,13 @@ exports.checkBlank = function (res, blankData, cb) {
     }
 };
 
-exports.checkAccessToken = function(res, access_token, callback){
+exports.checkAccessToken = function (res, access_token, callback) {
 
-    db_layer.getAccessToken(res, access_token, function(error, result) {
+    db_layer.getAccessToken(res, access_token, function (error, result) {
 
         var countResult = result.length;
-        if(countResult === 0) {
-           responses.accessTokenInfoFailed(res,[]);
+        if (countResult === 0) {
+            responses.accessTokenInfoFailed(res, []);
         } else {
             callback(null, result);
         }
@@ -54,3 +54,14 @@ exports.checkAccessToken = function(res, access_token, callback){
 //        }
 //    })
 //}
+
+exports.checkPassword = function (res, password, cb) {
+
+    var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,16}$/;
+    if (!re.test(password)) {
+     responses.passwordValidationFailed(res,[]);
+    } else {
+        cb(null, password);
+    }
+
+};

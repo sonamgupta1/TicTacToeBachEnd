@@ -26,6 +26,7 @@ define(exports.responseMessages, 'GET_ACCESS_TOKEN_SUCCESSFULLY',            'Ac
 define(exports.responseMessages, 'ACCESS_TOKEN_NOT_EXISTS',                  'Invalid access token.');
 define(exports.responseMessages, 'DATA_NOT_EXISTS',                           'Invalid id.');
 define(exports.responseMessages, 'ACTION_FAILED',                             'No result.');
+define(exports.responseMessages, 'PASSWORD_FEILD_NOT_VALID',                  'Password matching expression. Password must be at least 6 characters, no more than 16 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit.');
 
 
 
@@ -48,6 +49,7 @@ define(exports.responseStatus, 'GET_ACCESS_TOKEN_SUCCESSFULLY',         200);
 define(exports.responseStatus, 'ACCESS_TOKEN_NOT_EXISTS',               400);
 define(exports.responseStatus, 'DATA_NOT_EXISTS',                       400);
 define(exports.responseStatus, 'ACTION_FAILED',                         400);
+define(exports.responseStatus, 'PASSWORD_FEILD_NOT_VALID',              400);
 
 
 

@@ -139,3 +139,11 @@ exports.actionFailed = function(res, data) {
     };
     res.jsonp(response);
 };
+exports.passwordValidationFailed = function(res, data) {
+    var response = {
+        "message": constants.responseMessages.PASSWORD_FEILD_NOT_VALID,
+        "status":  constants.responseStatus.PASSWORD_FEILD_NOT_VALID,
+        "data": data
+    };
+    res.jsonp(response);
+};
