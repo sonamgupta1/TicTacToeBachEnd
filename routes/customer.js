@@ -313,7 +313,8 @@ exports.dashboardInfo = function (req, res) {
             },
             function (profileData, cb) {
                 id = profileData[0].id;
-                db_layer.getDashboardUsers(res, cb);
+                //db_layer.getDashboardUsers(res, cb);
+                db_layer.getTotalUsers(res, cb);
 
             },
             function (dashboardUser, cb) {
@@ -372,12 +373,8 @@ exports.dashboardInfo = function (req, res) {
           function (winPercentage, cb) {
 
                 var sortedWinPercentage =  (_.sortBy(winPercentage, 'winPercentageAll')).reverse();
-                //
-                //console.log("winPercentage", sortedWinPercentage);
-                //
-                //var index = _.findIndex(sortedWinPercentage, { id: 19 });
-                //
-                //console.log("rank",index+1);
+
+                console.log("winPercentage", sortedWinPercentage);
 
                 cb(null, sortedWinPercentage);
             },
@@ -392,51 +389,19 @@ exports.dashboardInfo = function (req, res) {
 
                 if (sortedWinPercentage[i].winPercentageAll === sortedWinPercentage[i + 1].winPercentageAll) {
 
-                    console.log("iiiiiiiiiiiiii", i);
-                    return cb(i);
+                    return cb(null,i);
                 }
-            
-                else{
-                    console.log("iiiiiiiiiiiiii======================",index);
-                    finalIndex = index;
-                    return cb(finalIndex);
-
-
-                }
-
-                //if(++counter === index) {
-                //    cb(null, finalIndex);
-                //}
             }
 
+            cb(null,index);
         },
         function(FinalIndex, cb){
-            console.log("FinalIndex @@@@@@@@@",FinalIndex);
+            rank = FinalIndex+1;
             cb(null,100);
         }
 
         ],
         function (error, result) {
-
-            //var length = result.length;
-            //
-            //console.log("length", result[0].winPercentageAll);
-
-            var index = _.findIndex(result, { id: id });
-
-            //console.log("index",index);
-            //
-            //
-            //for(var i = 0; i<index; i++){
-            //
-            //    if(result[i].winPercentageAll === result[i+1].winPercentageAll){
-            //
-            //        console.log("iiiiiiiiiiiiii",i);
-            //    }
-            //    else{
-            //        console.log("iiiiiiiiiiiiii======================",index);
-            //    }
-            //}
 
 
             var dashboard = [{
@@ -446,7 +411,7 @@ exports.dashboardInfo = function (req, res) {
                 loss: loss,
                 score: win * 10,
                 completedAttempt: completedAttempt,
-                rank: index+1
+                rank: rank
 
             }];
 

@@ -106,11 +106,25 @@ exports.logOut = function (res, User, cb) {
     });
 };
 
-exports.getDashboardUsers = function (res, cb) {
+//exports.getDashboardUsers = function (res, cb) {
+//
+//    var sqlSelectDashboardUsers = "SELECT COUNT(*) as `total_user` FROM `game_assignment`";
+//    var profileParameter = [];
+//    connection.query(sqlSelectDashboardUsers, profileParameter, function (error, result) {
+//
+//        if (error) {
+//            responses.executionError(res, []);
+//        } else {
+//            cb(null, result);
+//        }
+//    });
+//};
 
-    var sqlSelectDashboardUsers = "SELECT COUNT(*) as `total_user` FROM `game_assignment`";
+exports.getTotalUsers = function (res, cb) {
+
+    var sqlSelectTotalUsers = "SELECT COUNT(*) as `total_user` FROM `user`";
     var profileParameter = [];
-    connection.query(sqlSelectDashboardUsers, profileParameter, function (error, result) {
+    connection.query(sqlSelectTotalUsers, profileParameter, function (error, result) {
 
         if (error) {
             responses.executionError(res, []);
