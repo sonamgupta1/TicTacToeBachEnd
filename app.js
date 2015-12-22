@@ -23,8 +23,6 @@ app.set('json spaces', 1);
 
 var customer = require('./routes/customer');
 
-console.log("customer ====", customer);
-
 app.post('/sign_up', customer.signup);
 
 
