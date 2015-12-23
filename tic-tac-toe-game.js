@@ -201,16 +201,11 @@ TicTacToe.prototype.endTurn = function(game) {
 	winner = didSomeoneWin(game);
 
 	if(winner != null) {
-		console.log("Going to save into database");
+		console.log("Going to save into database   ==========", winner);
 	} else {
-		console.log("Not going to save into database");
+		console.log("Not going to save into database ########", winner);
 	}
 
-	console.log("winner =======", winner);
-
-
-
-	console.log("I AM GOING TO CHECK FOR WINNER ====", winner);
 
 	if (winner) {
 		// if there is a winner, set the current player to null to
@@ -276,6 +271,7 @@ var WINNING_COMBINATIONS = [
  */
 var didSomeoneWin = function(game) {
 
+	console.log("I will come from didSomeoneWin ======", game);
 	var board, boardKeys, intersected, i, possibleWinningCombos, winningCombo,
 		winningSymbol;
 

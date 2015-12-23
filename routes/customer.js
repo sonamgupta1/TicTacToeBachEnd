@@ -222,7 +222,7 @@ exports.edit_profile   = function (req, res) {
     var access_token = req.body.access_token,
         name         = req.body.name;
 
-    all_value = [access_token, name];
+    var all_value = [access_token, name];
 
     var editUser          = {};
     editUser.access_token = access_token;
