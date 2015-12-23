@@ -77,15 +77,13 @@ exports.loginUser = function (res, userLogin, cb) {
 exports.profileEdit = function (res, editUser, cb) {
 
     var sqlEditUserProfile = "UPDATE user SET `full_name`=? where `access_token` = ? LIMIT 1";
-
-    var profileParameter = [editUser.name, editUser.access_token];
+    var profileParameter   = [editUser.name, editUser.access_token];
 
     connection.query(sqlEditUserProfile, profileParameter, function (error, result) {
-
         if (error) {
             responses.executionError(res, []);
         } else {
-            cb(null, []);
+            cb(null, result);
         }
     });
 };

@@ -229,15 +229,14 @@ exports.edit_profile = function (req, res) {
     logging.startSection("edit profile");
     logging.logRequest(req);
 
-
     var access_token = req.body.access_token,
-        name = req.body.name;
+        name         = req.body.name;
 
     all_value = [access_token, name];
 
-    var editUser = {};
+    var editUser          = {};
     editUser.access_token = access_token;
-    editUser.name = name;
+    editUser.name         = name;
 
     async.waterfall([
             function (cb) {
@@ -249,15 +248,16 @@ exports.edit_profile = function (req, res) {
             function (data, cb) {
                 db_layer.profileEdit(res, editUser, cb);
             },
-            function (profileData, cb) {
-                cb(null, profileData);
+            function (updateData, cb) {
+                console.log("Profile data successfully updated", updateData);
+                cb(null, 100);
             }
         ],
         function (error, result) {
             if (error) {
                 responses.finalResultError(res, []);
             } else {
-                responses.successUserEditProfile(res, result);
+                responses.successUserEditProfile(res, []);
             }
         });
 };
