@@ -150,7 +150,6 @@ exports.getWinCount = function (res, id, cb) {
 
 exports.getLossCount = function (res, id, cb) {
 
-
     var sqlSelectUserLoss = "SELECT COUNT(*) as `user_loss` FROM `game_assignment` where (`first_user_id` = ? OR `second_user_id` =?) AND `result` =? AND `status` = ?";
     var lossParameter = [id, id, 0, 1];
     connection.query(sqlSelectUserLoss, lossParameter, function (error, result) {
@@ -203,3 +202,19 @@ exports.getAllUserId = function (res, cb) {
         }
     });
 };
+
+exports.updateAccessToken = function (res, user, cb) {
+
+    var sqlUpdateAccessToken = "UPDATE user SET `access_token`=? where `user_name` = ? LIMIT 1";
+    var bindParameter = [user.access_token, user.user_name];
+
+    connection.query(sqlUpdateAccessToken, bindParameter, function (error, result) {
+        if (error) {
+            responses.executionError(res, []);
+        } else {
+            cb(null, result);
+        }
+    });
+};
+
+

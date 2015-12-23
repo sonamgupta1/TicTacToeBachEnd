@@ -148,14 +148,15 @@ exports.login = function (req, res) {
     logging.startSection("login");
     logging.logRequest(req);
 
-    var user_name = req.query.user_name,
-        password = req.query.password,
-        all_value = [user_name, password];
+    var user_name    = req.query.user_name,
+        password     = req.query.password,
+        access_token = md5(user_name + new Date()),
+        all_value    = [user_name, password, access_token];
 
-    var userLogin = {};
-    userLogin.user_name = user_name;
-    userLogin.password = (md5(password));
-
+    var userLogin           = {};
+    userLogin.access_token  = access_token;
+    userLogin.user_name     = user_name;
+    userLogin.password      = (md5(password));
 
     async.waterfall([
             function (cb) {
@@ -166,21 +167,31 @@ exports.login = function (req, res) {
             },
             function (loginData, cb) {
                 var countLoginData = loginData.length;
-
-
                 if (countLoginData === 0) {
                     responses.failedLogin(res, []);
                 }
                 else {
                     cb(null, loginData);
                 }
+            },
+            function(loginData, cb) {
+                db_layer.updateAccessToken(res, userLogin, cb);
+            },
+            function(updateUser, cb) {
+                console.log("Access token successfully updated", updateUser);
+
+                var user = [{
+                    access_token : access_token
+                }];
+                cb(null, user);
             }
+
         ],
         function (error, result) {
             if (error) {
                 responses.finalResultError(res, []);
             } else {
-                responses.successLogin(res, []);
+                responses.successLogin(res, result);
             }
         });
 };

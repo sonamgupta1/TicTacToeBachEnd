@@ -19,11 +19,21 @@ function TicTacToe() {
  * @return {Object} A brand new tic-tac-toe game
  */
 TicTacToe.prototype.createGame = function() {
+
+	console.log("HI COMES FROM NEW GAME");
+
 	// create the game data
 	var game = {};
 	game.player1 = new Player(1);
+
+	console.log("game.player1 =======", game.player1);
+
+
 	game.player1Score = 0;
 	game.player2 = new Player(2);
+
+	console.log("game.player2 ====", game.player2);
+
 	game.player2Score = 0;
 
 	// when creating a game, by default, the player who has
@@ -34,6 +44,11 @@ TicTacToe.prototype.createGame = function() {
 
 	// add our game to our list of games
 	this.gameData.games.push(game);
+
+
+	console.log("game ====", game);
+
+
 
 	// return it to allow others to play
 	return game;
@@ -187,6 +202,9 @@ TicTacToe.prototype.endTurn = function(game) {
 
 	// check to see if there is a winner
 	winner = didSomeoneWin(game);
+
+	console.log("I AM GOING TO CHECK FOR WINNER ====", winner);
+
 	if (winner) {
 		// if there is a winner, set the current player to null to
 		// avoid allowing additional moves
@@ -250,6 +268,7 @@ var WINNING_COMBINATIONS = [
  *                          winner, then null.
  */
 var didSomeoneWin = function(game) {
+
 	var board, boardKeys, intersected, i, possibleWinningCombos, winningCombo,
 		winningSymbol;
 
