@@ -1,16 +1,20 @@
-var async = require('async'),
+var async           = require('async'),
     common_function = require('../resources/common-function'),
-    constant = require('../resources/constant'),
-    auth_layer = require('../resources/auth-layer'),
-    db_layer = require('../resources/db-layer'),
-    responses = require('../resources/responses'),
-    logging = require('../resources/logging'),
-    md5 = require('MD5');
-
+    constant        = require('../resources/constant'),
+    auth_layer      = require('../resources/auth-layer'),
+    db_layer        = require('../resources/db-layer'),
+    responses       = require('../resources/responses'),
+    logging         = require('../resources/logging'),
+    md5             = require('MD5');
 var _ = require('underscore');
 
 
-exports.signup = function (req, res) {
+
+
+
+
+
+exports.signup         = function (req, res) {
     logging.startSection("signup");
     logging.logRequest(req);
 
@@ -64,19 +68,7 @@ exports.signup = function (req, res) {
         });
 };
 
-
-//
-//exports.demoPut = function(req, res) {
-//
-//    console.log("Hi---")
-//    logging.startSection("signup");
-//    logging.logRequest(req.param);
-//    res.send(JSON.stringify("just demo"));
-//
-//};
-
-
-exports.getUserName = function (req, res) {
+exports.getUserName    = function (req, res) {
     logging.startSection("getUserName");
     logging.logRequest(req);
 
@@ -108,7 +100,6 @@ exports.getUserName = function (req, res) {
             }
         });
 };
-
 
 exports.getAccessToken = function (req, res) {
     logging.startSection("getAccessToken");
@@ -143,8 +134,7 @@ exports.getAccessToken = function (req, res) {
         });
 };
 
-
-exports.login = function (req, res) {
+exports.login          = function (req, res) {
     logging.startSection("login");
     logging.logRequest(req);
 
@@ -196,7 +186,7 @@ exports.login = function (req, res) {
         });
 };
 
-exports.profile = function (req, res) {
+exports.profile        = function (req, res) {
     logging.startSection("profile");
     logging.logRequest(req);
 
@@ -224,7 +214,7 @@ exports.profile = function (req, res) {
         });
 };
 
-exports.edit_profile = function (req, res) {
+exports.edit_profile   = function (req, res) {
 
     logging.startSection("edit profile");
     logging.logRequest(req);
@@ -262,7 +252,7 @@ exports.edit_profile = function (req, res) {
         });
 };
 
-exports.LogOut = function (req, res) {
+exports.LogOut         =  function (req, res) {
 
     logging.startSection("Logout");
     logging.logRequest(req);
@@ -299,8 +289,7 @@ exports.LogOut = function (req, res) {
         });
 };
 
-
-exports.dashboardInfo = function (req, res) {
+exports.dashboardInfo  = function (req, res) {
 
     logging.startSection("dashboard Info ");
     logging.logRequest(req);
@@ -427,6 +416,42 @@ exports.dashboardInfo = function (req, res) {
                 responses.finalResultError(res, []);
             } else {
                 responses.actionComplete(res, dashboard);
+            }
+        });
+};
+
+
+exports.initializeGame = function (req, res) {
+
+    console.log("Comes from initialize game ===");
+
+
+    logging.startSection("initializeGame");
+    logging.logRequest(req);
+
+    var access_token = req.body.access_token,
+        all_value    = [access_token];
+
+    async.waterfall([
+            function (cb) {
+                auth_layer.checkBlank(res, all_value, cb);
+            },
+            function (arg1, cb) {
+                auth_layer.checkAccessToken(res, access_token, cb);
+            },
+            function (userData, cb) {
+                var player = require('../player');
+                var player = new player();
+                var a= userData[0].id;
+                module.exports.userid = a;
+                cb(null, 100);
+            }
+        ],
+        function (error, result) {
+            if (error) {
+                responses.finalResultError(res, []);
+            } else {
+                responses.actionComplete(res, []);
             }
         });
 };

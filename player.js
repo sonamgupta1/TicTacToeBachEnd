@@ -4,9 +4,16 @@
  * 
  * @param {int} number 1 for Player 1 or 2 for Player 2
  */
+
+
+var customer = require('./routes/customer');
+
+
 function Player(number) {
-	this.id = null;
+	this.id     = null;
 	this.number = number;
+	this.userId = customer.userid;
+
 	if (this.number === 1) {
 		this.xo = "X";
 	} else {
@@ -24,6 +31,9 @@ Player.prototype.getID = function() {
 	return this.id;
 	console.log("idddddddddd",this.id);
 };
+
+
+
 
 /**
  * Returns the X or O symbol for this player
@@ -52,6 +62,17 @@ Player.prototype.assignID = function(playerID) {
 	this.id = playerID;
 	this.readyToStartGame = true;
 };
+
+// THis is created by me .....
+Player.prototype.setUserId = function(userId) {
+	this.userId = userId;
+};
+
+// custom
+Player.prototype.getUserId = function() {
+	return this.userId;
+};
+
 
 /**
  * Returns true iff the ID matches this player -- meaning this is the player

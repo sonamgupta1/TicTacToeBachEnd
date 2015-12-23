@@ -23,9 +23,8 @@ TicTacToe.prototype.createGame = function() {
 	console.log("HI COMES FROM NEW GAME");
 
 	// create the game data
-	var game = {};
+	var game     = {};
 	game.player1 = new Player(1);
-
 	console.log("game.player1 =======", game.player1);
 
 
@@ -47,8 +46,6 @@ TicTacToe.prototype.createGame = function() {
 
 
 	console.log("game ====", game);
-
-
 
 	// return it to allow others to play
 	return game;
@@ -203,6 +200,16 @@ TicTacToe.prototype.endTurn = function(game) {
 	// check to see if there is a winner
 	winner = didSomeoneWin(game);
 
+	if(winner != null) {
+		console.log("Going to save into database");
+	} else {
+		console.log("Not going to save into database");
+	}
+
+	console.log("winner =======", winner);
+
+
+
 	console.log("I AM GOING TO CHECK FOR WINNER ====", winner);
 
 	if (winner) {
@@ -309,6 +316,8 @@ var didSomeoneWin = function(game) {
 				// return the information
 				return {
 					symbol: winningSymbol,
+					firstUserId : game.player1.getUserId(),
+					secondUserId : game.player2.getUserId(),
 					combination: winningCombo
 				};
 			}

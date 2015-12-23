@@ -1,6 +1,8 @@
 var socketio = require("socket.io");
 var ticTacToe = require("../tic-tac-toe-game.js");
 
+
+
 module.exports = function(app, server) {
 	var io;
 
@@ -13,16 +15,19 @@ module.exports = function(app, server) {
 		if (!game.player1.isInUse()) {
 			game.player1.assignID(socket.id);
 			// inform the client
+			// THIS IS CRUCILA NEED TO TRACK
 			io.sockets.socket(socket.id).emit("player_id", {
 				playerNumber: game.player1.getNumber(),
-				playerXO: game.player1.getXO()
+				playerXO: game.player1.getXO(),
+				userId  : game.player1.getUserId()
 			});
 		} else {
 			game.player2.assignID(socket.id);
 			// inform the client
 			io.sockets.socket(socket.id).emit("player_id", {
 				playerNumber: game.player2.getNumber(),
-				playerXO: game.player2.getXO()
+				playerXO: game.player2.getXO(),
+				userId  : game.player1.getUserId()
 			});
 		}
 
@@ -63,10 +68,12 @@ module.exports = function(app, server) {
 			if (endTurnResult.winner) {
 				// if there's a winner, send the info to the clients
 				io.sockets.socket(game.player1.getID()).emit("end_game", {
-					winner: endTurnResult.winner
+					winner: endTurnResult.winner,
+					userId  : game.player1.getUserId()
 				});
 				io.sockets.socket(game.player2.getID()).emit("end_game", {
-					winner: endTurnResult.winner
+					winner: endTurnResult.winner,
+					userId  : game.player2.getUserId()
 				});
 			} else if (endTurnResult.stalemate) {
 				// if there's a stalemate, send the info to the clients
@@ -144,4 +151,5 @@ module.exports = function(app, server) {
 	app.get("/", function(req, res) {
 		res.render("tic-tac-toe.html");
 	});
+
 };

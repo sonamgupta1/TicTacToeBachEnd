@@ -64,3 +64,10 @@ form(action='/dashboard',method='get')
     input(type='submit', value='submit')
     hr
     hr
+h4 initialize_game
+form(action='/initialize_game', method='post')
+    | access_token
+    input(type='text',name='access_token')
+    input(type='submit', value='submit')
+    hr
+    hr

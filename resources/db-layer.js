@@ -36,7 +36,6 @@ exports.getAccessToken = function (res, access_token, cb) {
             responses.executionError(res, []);
         } else {
             cb(null, result);
-
         }
     });
 };

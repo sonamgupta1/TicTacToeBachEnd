@@ -37,6 +37,7 @@ app.post('/edit_profile', customer.edit_profile);
 app.post('/logOut', customer.LogOut);
 app.get('/access_token', customer.getAccessToken);
 app.get('/dashboard', customer.dashboardInfo);
+app.post('/initialize_game', customer.initializeGame);
 
 
 app.configure(function() {
