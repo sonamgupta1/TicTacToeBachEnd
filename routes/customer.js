@@ -352,7 +352,6 @@ exports.dashboardInfo = function (req, res) {
                 completedAttempt = userCompletedAttempt[0].total_attempt;
 
                 db_layer.getAllUserId(res, cb);
-
             },
             function (userId, cb) {
 
@@ -362,11 +361,9 @@ exports.dashboardInfo = function (req, res) {
                 var conuter = 0;
                 var j = 0;
                 for (var i = 0; i < user_id.length; i++) {
-
                     (function (i) {
                         var id = user_id[i];
                         common_function.calculateUserWinPercentage(res, id, function (error, result) {
-
                             userWinResult.push({
                                 id: id,
                                 winPercentageAll: result
@@ -379,42 +376,31 @@ exports.dashboardInfo = function (req, res) {
                         });
                     }(i));
                 }
-
             },
             function (winPercentage, cb) {
-
                 var sortedWinPercentage = (_.sortBy(winPercentage, 'winPercentageAll')).reverse();
-
                 console.log("winPercentage", sortedWinPercentage);
 
                 cb(null, sortedWinPercentage);
             },
             function (sortedWinPercentage, cb) {
 
-                var index = _.findIndex(sortedWinPercentage, {id: id});
+                var index      = _.findIndex(sortedWinPercentage, {id: id});
                 var finalIndex = 0;
-                var counter = 0;
-
-
+                var counter    = 0;
                 for (var i = 0; i < index; i++) {
-
                     if (sortedWinPercentage[i].winPercentageAll === sortedWinPercentage[i + 1].winPercentageAll) {
-
                         return cb(null, i);
                     }
                 }
-
-                cb(null, index);
+                return cb(null, index);
             },
-            function (FinalIndex, cb) {
+            function(FinalIndex, cb) {
                 rank = FinalIndex + 1;
                 cb(null, 100);
             }
-
         ],
         function (error, result) {
-
-
             var dashboard = [{
                 id: id,
                 totalUser: totalUser,
@@ -424,7 +410,6 @@ exports.dashboardInfo = function (req, res) {
                 score: win * 10,
                 completedAttempt: completedAttempt,
                 rank: rank
-
             }];
 
             if (error) {
